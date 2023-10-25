@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Find cat</title>
+  <style>
+    body {
+      height: 100vh;
+    }
+
+    .main-container {
+      width: 40vw;
+      height: 40vw;
+      border: 5px solid black;
+      margin: auto;
+      position: relative;
+    }
+
+    #find {
+      width: 10vw;
+      height: 10vw;
+      background-color: aqua;
+      position: relative;
+      left: 0;
+      top: 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Find halloween's cat!</h1>
+  <p>Click on cat then click again to catch him!</p>
+  <div class="main-container">
+    <div id="find"></div>
+  </div>
+  <hr>
+  <label for="mv">Max velocity</label>
+  <input type="number" name="mv" id="mv" placeholder="Max velocity">
+  <br>
+  <label for="vme">Velocity multiplicative error (From 0 to 1)</label>
+  <input type="number" name="vme" id="vme" step="0.05" placeholder="From 0 to 1">
+  <br>
+  <span>Velocity formula: <code>A*ln(distance) + B</code></span>
+  <br>
+  <label for="A">A</label> 
+  <input type="number" name="A" id="A" step="0.1" placeholder="A for velocity formula">
+  <br>
+  <label for="B">B</label> 
+  <input type="number" name="B" id="B" step="0.1" placeholder="B for velocity formula">
+  <hr>
+  <label for="vde">Vector direction error (<b>THE MOST FUN</b>)</label>
+  <input type="number" name="vde" id="vde" step="0.1" placeholder="Experiment!">
+  <script src="./script.js"></script>
+</body>
+</html>
