@@ -9,21 +9,32 @@
       height: 100vh;
     }
 
+    .hide {
+      display: none;
+    }
+
     .main-container {
-      width: 40vw;
-      height: 40vw;
       border: 5px solid black;
       margin: auto;
       position: relative;
+      background-image: url("./static/cat1/634-639-conatiner.jpg");
+      width: 634px;
+      height: 639px;
     }
 
+    .find-box {
+      width: 61px;
+      height: 96px;
+      left: 105px;
+      top: 475px;
+    }
     #find {
-      width: 10vw;
-      height: 10vw;
-      background-color: aqua;
       position: relative;
-      left: 0;
-      top: 0;
+      background-image: url("./static/cat1/105-475-find.jpg");
+    }
+    #find-background {
+      position: absolute;
+      background-color: black;
     }
   </style>
 </head>
@@ -31,7 +42,8 @@
   <h1>Find halloween's cat!</h1>
   <p>Click on cat then click again to catch him!</p>
   <div class="main-container">
-    <div id="find"></div>
+    <div class="hide find-box" id="find-background"></div>
+    <div class="find-box" id="find"></div>
   </div>
   <hr>
   <label for="mv">Max velocity</label>
@@ -50,6 +62,11 @@
   <hr>
   <label for="vde">Vector direction error (<b>THE MOST FUN</b>)</label>
   <input type="number" name="vde" id="vde" step="0.1" placeholder="Experiment!">
+  <hr>
+  <label for="gvA">Gravity to center velocity = <code>center_dist^A</code></label>
+  <input type="number" name="gvA" id="gvA" step="0.01" placeholder="Gravity power">
+  <audio src="./static/start.mp3" id="start"></audio>
+  <audio src="./static/win.mp3" id="win"></audio>
   <script src="./script.js"></script>
 </body>
 </html>

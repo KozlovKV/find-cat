@@ -1,19 +1,19 @@
-let container = document.getElementsByClassName('main-container')[0];
+let box = document.getElementsByClassName('main-container')[0];
 let find = document.getElementById('find');
+let findBG = document.getElementById('find-background');
+let audioStart = document.getElementById('start');
+let audioWin = document.getElementById('win');
 
-let boxW = container.clientWidth;
-let boxH = container.clientHeight;
+let boxW = box.clientWidth;
+let boxH = box.clientHeight;
 let findW = find.clientWidth;
 let findH = find.clientHeight;
 
 // let fx = Math.random() * (boxW - findW); 
 // let fy = Math.random() * (boxH - findH);
 
-let fx = 0;
-let fy = 0;
-
-find.style.left = 0 + 'px';
-find.style.top = 0 + 'px';
+let fx = 105;
+let fy = 475;
 
 function getFindCenter() {
   return [
@@ -22,9 +22,19 @@ function getFindCenter() {
   ];
 }
 
+function getBoxCenter() {
+  return [
+    boxW / 2,
+    boxH / 2
+  ];
+}
+
 let animationID;
 let startAnimation = () => {
   find.removeEventListener('click', startAnimation);
+  find.style.border = "solid red 3px";
+  findBG.style.display = "block";
+  audioStart.autoplay = true;
   animationID = requestAnimationFrame(infiniteLoop);
   setTimeout(makeStopPossible, 2000);
 };
@@ -33,19 +43,20 @@ find.addEventListener('click', startAnimation);
 let makeStopPossible = () => {
   find.addEventListener('click', e => {
     cancelAnimationFrame(animationID);
+    audioWin.autoplay = true;
   })
 }
 
 let mouseX = 0, mouseY = 0;
 
-container.addEventListener('mousemove', e => {
+box.addEventListener('mousemove', e => {
   mouseX = e.layerX;
   mouseY = e.layerY;
 })
 
-let MAX_VELOCITY = 40;
+let MAX_VELOCITY = 20;
 let A = -18.0000818328;
-let B = 120.1939716044;
+let B = 100.1939716044;
 let VELOCITY_MULTIPLIER_ERROR = 0.25;
 function getVelocityMultiplier(r) {
   if (r <= findW / 2)
@@ -55,7 +66,7 @@ function getVelocityMultiplier(r) {
 }
 
 let VECTOR_DIRECTION_ERROR = 0.3;
-function getVector() {
+function getMouseFindVector() {
   let [cx, cy] = getFindCenter();
   let dx = cx - mouseX;
   let dy = cy - mouseY;
@@ -68,25 +79,35 @@ function getVector() {
   return [rvx, rvy];
 }
 
+let GRAVITY_A = 0.3;
+function getBoxCenterVector() {
+  let [cx, cy] = getFindCenter();
+  let [bx, by] = getBoxCenter();
+  let dx = bx - cx;
+  let dy = by - cy;
+  let r = Math.sqrt(dx*dx + dy*dy);
+  let nvx = (dx / r);
+  let nvy = (dy / r);
+  let vm = r**GRAVITY_A;
+  let rvx = nvx * vm;
+  let rvy = nvy * vm;
+  return [rvx, rvy];
+}
+
 function infiniteLoop() {
-  let [rvx, rvy] = getVector();
+  let [rvx, rvy] = getMouseFindVector();
   fx += rvx;
-  if (fx < 0)
-    fx = 0;
-  if (fx > boxW - findW)
-    fx = boxW - findW;
   fy += rvy;
-  if (fy < 0)
-    fy = 0;
-  if (fy > boxH - findH)
-    fy = boxH - findH;
+  let [bvx, bvy] = getBoxCenterVector();
+  fx += bvx;
+  fy += bvy;
   find.style.left = `${fx}px`;
   find.style.top = `${fy}px`;
   animationID = requestAnimationFrame(infiniteLoop);
 }
 
 let inputs = document.querySelectorAll('input');
-let defaultValues = [MAX_VELOCITY, VELOCITY_MULTIPLIER_ERROR, A, B, VECTOR_DIRECTION_ERROR];
+let defaultValues = [MAX_VELOCITY, VELOCITY_MULTIPLIER_ERROR, A, B, VECTOR_DIRECTION_ERROR, GRAVITY_A];
 inputs.forEach((input, i) => {
   input.value = defaultValues[i];
   input.addEventListener('change', e => {
@@ -106,6 +127,9 @@ inputs.forEach((input, i) => {
         break;
       case "vde":
         VECTOR_DIRECTION_ERROR = value;
+        break;
+      case "gvA":
+        GRAVITY_A = value;
         break;
       default:
         break;
