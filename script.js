@@ -1,4 +1,5 @@
-let box = document.getElementsByClassName('main-container')[0];
+let box = document.getElementsByClassName('image')[0];
+let configContainer = document.getElementById('config');
 let find = document.getElementById('find');
 let findBG = document.getElementById('find-background');
 let audioStart = document.getElementById('start');
@@ -33,7 +34,7 @@ let animationID;
 let startAnimation = () => {
   find.removeEventListener('click', startAnimation);
   find.style.border = "solid red 3px";
-  findBG.style.display = "block";
+  findBG.classList.remove("hide");
   audioStart.autoplay = true;
   animationID = requestAnimationFrame(infiniteLoop);
   setTimeout(makeStopPossible, 2000);
@@ -105,6 +106,12 @@ function infiniteLoop() {
   find.style.top = `${fy}px`;
   animationID = requestAnimationFrame(infiniteLoop);
 }
+
+document.addEventListener('keypress', e => {
+  if (e.key == 'C')
+    configContainer.classList.toggle('hide');
+    configContainer.classList.toggle('config-container');
+})
 
 let inputs = document.querySelectorAll('input');
 let defaultValues = [MAX_VELOCITY, VELOCITY_MULTIPLIER_ERROR, A, B, VECTOR_DIRECTION_ERROR, GRAVITY_A];
